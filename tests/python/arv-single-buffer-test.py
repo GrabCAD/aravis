@@ -15,22 +15,15 @@ from gi.repository import Aravis
 
 # Hexadecimal dump code from http://www.alexonlinux.com/hex-dump-functions
 
-def DumpBuffer (buf, length, caption="", dest=sys.stdout):
+def DumpBuffer(buf, length, caption="", dest=sys.stdout):
 	def GetPrintableChar(str):
-		if str.isalpha():
-			return str
-		else:
-			return '.'
+		return str if str.isalpha() else '.'
 
 	dest.write('---------> %s <--------- (%d bytes)\n' % (caption, length))
 	dest.write('       +0          +4          +8          +c           0   4   8   c\n')
 	i = 0
 	while i < length:
-		if length - i > 16:
-			l = 16
-		else:
-			l = length - i
-
+		l = 16 if length - i > 16 else length - i
 		dest.write('+%04x  ' % i)
 		s = ' '.join(["%02x" % ord(c) for c in buf[i:i + l]])
 		dest.write(s)
@@ -40,7 +33,7 @@ def DumpBuffer (buf, length, caption="", dest=sys.stdout):
 		dest.write(s)
 		dest.write('\n')
 
-		i = i + 16
+		i += 16
 
 Aravis.enable_interface ("Fake")
 
